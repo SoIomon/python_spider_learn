@@ -78,11 +78,14 @@ class BDTB:
     def getContent(self, page):
         pattern = re.compile('<div id="post_content_.*?>(.*?)</div>', re.S)
         items = re.findall(pattern, page)
+        floor = 1
         #for item in items:
         #    print item
-        print self.tool.replace(items[1])
+        #print self.tool.replace(items[1])
         for item in items:
-            print item
+            print floor, u"楼------------------------------------------------------------------------------------------------------------------------------------\n"
+            print self.tool.replace(item)
+            floor += 1
 
 baseURL = 'http://tieba.baidu.com/p/3138733512'
 bdtb = BDTB(baseURL,1)
