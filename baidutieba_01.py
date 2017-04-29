@@ -32,12 +32,22 @@ class Tool:
 
 #百度贴吧爬虫类
 class BDTB:
-
-    #初始化方法，传入基地址，是否只看楼主
-    def __init__(self,baseUrl,seeLZ):
+    # 初始化，传入基地址，是否只看楼主的参数
+    def __init__(self, baseUrl, seeLZ, floorTag):
+        # base链接地址
         self.baseURL = baseUrl
+        # 是否只看楼主
         self.seeLZ = '?see_lz=' + str(seeLZ)
+        # HTML标签剔除工具类对象
         self.tool = Tool()
+        # 全局file变量，文件写入操作对象
+        self.file = None
+        # 楼层标号，初始为1
+        self.floor = 1
+        # 默认的标题，如果没有成功获取到标题的话则会用这个标题
+        self.defaultTitle = u"百度贴吧"
+        # 是否写入楼分隔符的标记
+        self.floorTag = floorTag
 
     #传入页码，获取帖子的代码
     def getPage(self,pageNum):
@@ -46,15 +56,14 @@ class BDTB:
             request = urllib2.Request(url)
             response = urllib2.urlopen(request)
             #print response.read()
-            return response.read()
+            return response.read().decode('utf-8')
         except urllib2.URLError, e:
             if hasattr(e,"reason"):
                 print u"链接百度贴吧失败，错误原因",e.reason
                 return None
 
     #获取页面标题
-    def getTitle(self):
-        page = self.getPage(1)
+    def getTitle(self,page):
         pattern = re.compile('<h3 class="core_title_txt pull-left text-overflow.*?>(.*?)</h3>',re.S)
         result = pattern.search(page)
         if result:
@@ -64,12 +73,11 @@ class BDTB:
             return None
 
     #获取帖子页面数
-    def getPageNum(self):
-        page = self.getPage(1)
+    def getPageNum(self,page):
         pattern = re.compile('<li class="l_reply_num".*?</span>.*?<span.*?>(.*?)</span>')
         result = pattern.search(page)
         if result:
-            print  result.group(1)
+            #print  result.group(1)
             return result.group(1).strip()
         else:
             return None
