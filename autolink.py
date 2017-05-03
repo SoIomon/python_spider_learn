@@ -23,4 +23,5 @@ data = {
 post_data = urllib.urlencode(data)
 request = urllib2.Request(url,post_data,headers=headers)
 response = urllib2.urlopen(request)
-print response.read().decode('GB2312')
+result = response.read().decode('GB2312')
+print result
