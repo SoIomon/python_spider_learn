@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding:utf-8 -*-
 
 import urllib
@@ -18,34 +19,40 @@ class AutoLink:
 
     #自动连接方法
     def link(self):
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36'
-        }
-        data = {
-            'DDDDD': self.username,
-            'upass': self.password,
-            '0MKKey': '(unable to decode value)',
-            'v6ip': ''
-        }
-        post_data = urllib.urlencode(data)
-        request = urllib2.Request(self.url, post_data, headers)
-        response = urllib2.urlopen(request)
-        code = response.read().decode('GB2312')
-        pattern = re.compile('<title>(.*?)</title>',re.S)
-        result = re.findall(pattern, code)
-        print result[0]
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36'
+            }
+            data = {
+                'DDDDD': self.username,
+                'upass': self.password,
+                '0MKKey': '(unable to decode value)',
+                'v6ip': ''
+            }
+            post_data = urllib.urlencode(data)
+            request = urllib2.Request(self.url, post_data, headers)
+            response = urllib2.urlopen(request)
+            code = response.read().decode('GB2312')
+            pattern = re.compile('<title>(.*?)</title>',re.S)
+            result = re.findall(pattern, code)
+            print result[0]
+        except urllib2.URLError,e:
+            if hasattr(e, "reason"):
+                print u"连接失败，错误原因",e.reason
+                return None
 
     # 判断网络连通性
     def judegConnect(self):
         exit_code = os.system('ping www.baidu.com')
-        if exit_code:
-            raise Exception('connect failed.')
-            self.link()
+        #exit_code 连通时为0 否则为1
+        return exit_code
 
-
-#a = AutoLink(101001972000800,252838)
-Flag = True
-
-while Flag:
-    time.sleep(3)
-    a.judegConnect()
+if __name__ == '__main__':
+    id = raw_input(u'请输入账号：')
+    password = raw_input(u'请输入密码：')
+    a = AutoLink(id,password)
+    a.link()
+    while True:
+        time.sleep(30)
+        if (a.judegConnect()):
+            a.link()
