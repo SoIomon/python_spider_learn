@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import urllib2
+import urllib
 import tool
 import re
 
@@ -11,10 +12,12 @@ class TBMM:
     #初始化方法
     def __init__(self):
         self.baseURL = 'https://mm.taobao.com/json/request_top_list.htm'
+        self.user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
+        self.headers = {'User-Agent': self.user_agent}
 
     def getPage(self,Index):
         url = self.baseURL + '?page=' + str(Index)
-        request = urllib2.Request(url)
+        request = urllib2.Request(url,headers=self.headers)
         response = urllib2.urlopen(request)
         return response.read().decode('gbk')
 
@@ -29,16 +32,23 @@ class TBMM:
         items = re.findall(pattern,page)
         contents = []
         for item in items:
-            info = 'https://mm.taobao.com/self/model_info.htm?user_id='+ str(item[0]) +'&is_coment=false'   #详细信息页面url
+            info = 'https://mm.taobao.com/self/model_info.htm?user_id=96614110&is_coment=false'   #详细信息页面url
             contents.append([info ,item[1], item[2], item[3], item[4]])
+        #print contents
         return contents
 
-        # 获取MM个人详情页面
+    # 获取MM个人详情页面
     def getDetailPage(self, infoURL):
-        response = urllib2.urlopen(infoURL)
-        return response.read().decode('gbk')
+        request = urllib2.Request(infoURL,headers=self.headers)
+        response = urllib2.urlopen(request)
+        page = response.read().decode('gbk')
+        print page
+        pattern = re.compile('<div .*?"mm-p-info mm-p-domain-info">.*?<h4>',re.S)
+        item = re.findall(pattern,page)
+        print item
+        return page
 
-    # 获取个人文字简介
+    '''# 获取个人文字简介
     def getBrief(self, page):
         pattern = re.compile('<div class="mm-aixiu-content".*?>(.*?)<!--', re.S)
         result = re.search(pattern, page)
@@ -153,6 +163,8 @@ class TBMM:
             for i in range(start, end + 1):
                 print u"正在偷偷寻找第", i, u"个地方，看看MM们在不在"
                 self.savePageInfo(i)
+    '''
 
 a = TBMM()
-a.savePagesInfo(1,2)
+a.getConnent(1)
+a.getDetailPage('https://mm.taobao.com/self/model_info.htm?user_id=96614110&is_coment=false')
