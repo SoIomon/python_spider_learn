@@ -81,8 +81,30 @@ print type(soup.a.string)'''
 .stripped_strings
 输出的字符串中可能包含了很多空格或空行,使用 .stripped_strings 可以去除多余空白内容.
 '''
-for string in soup.strings:
+'''for string in soup.strings:
     print(repr(string))
 for string in soup.stripped_strings:
-    print (repr(string))
+    print (repr(string))'''
 
+'''父节点
+.parent 属性'''
+'''p = soup.p
+print p.parent.name
+content = soup.head.title.string
+print content.parent.name'''
+
+'''兄弟节点
+知识点：.next_sibling  .previous_sibling 属性
+兄弟节点可以理解为和本节点处在统一级的节点，.next_sibling 属性获取了该节点的下一个兄弟节点，
+.previous_sibling 则与之相反，如果节点不存在，则返回 None
+注意：实际文档中的tag的 .next_sibling 和 .previous_sibling 属性通常是字符串或空白，
+因为空白或者换行也可以被视作一个节点，所以得到的结果可能是空白或者换行'''
+#print soup.p.next_sibling
+#print soup.p.prev_sibling
+#print soup.p.next_sibling.next_sibling
+
+'''全部兄弟节点
+.next_siblings  .previous_siblings 属性
+通过 .next_siblings 和 .previous_siblings 属性可以对当前节点的兄弟节点迭代输出'''
+for sibling in soup.a.next_siblings:
+    print (repr(sibling))
