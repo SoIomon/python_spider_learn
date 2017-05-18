@@ -106,5 +106,29 @@ print content.parent.name'''
 '''全部兄弟节点
 .next_siblings  .previous_siblings 属性
 通过 .next_siblings 和 .previous_siblings 属性可以对当前节点的兄弟节点迭代输出'''
-for sibling in soup.a.next_siblings:
-    print (repr(sibling))
+#for sibling in soup.a.next_siblings:
+#    print (repr(sibling))
+
+'''前后节点
+.next_element  .previous_element 属性
+与 .next_sibling  .previous_sibling 不同，它并不是针对于兄弟节点，而是在所有节点，不分层次
+比如 head 节点为'''
+#print soup.head.next_element
+
+'''所有前后节点
+知识点：.next_elements  .previous_elements 属性
+通过 .next_elements 和 .previous_elements 的迭代器就可以向前或向后访问文档的解析内容,
+就好像文档正在被解析一样
+'''
+#for element in last_a_tag.next_elements:
+ #   print (repr(element))
+
+'''搜索文档树
+（1）find_all( name , attrs , recursive , text , **kwargs )
+find_all() 方法搜索当前tag的所有tag子节点,并判断是否符合过滤器的条件
+1）name 参数
+name 参数可以查找所有名字为 name 的tag,字符串对象会被自动忽略掉
+A.传字符串
+最简单的过滤器是字符串.在搜索方法中传入一个字符串参数,Beautiful Soup会查找与字符串完整匹配的内容,
+下面的例子用于查找文档中所有的<b>标签'''
+print soup.find_all('b')
