@@ -131,4 +131,38 @@ name 参数可以查找所有名字为 name 的tag,字符串对象会被自动�
 A.传字符串
 最简单的过滤器是字符串.在搜索方法中传入一个字符串参数,Beautiful Soup会查找与字符串完整匹配的内容,
 下面的例子用于查找文档中所有的<b>标签'''
-print soup.find_all('b')
+#print soup.find_all('b')
+#print soup.find_all('a')
+
+'''传正则表达式
+如果传入正则表达式作为参数,Beautiful Soup会通过正则表达式的 match() 来匹配内容.下面例子中找出所有以b开头的标签,
+这表示<body>和<b>标签都应该被找到'''
+#import re
+#for tag in soup.find_all(re.compile("^b")):
+#    print(tag.name)
+
+'''传列表
+如果传入列表参数,Beautiful Soup会将与列表中任一元素匹配的内容返回.下面代码找到文档中所有<a>标签和<b>标签'''
+#print soup.find_all(['a','b'])
+
+'''传 True
+True 可以匹配任何值,下面代码查找到所有的tag,但是不会返回字符串节点'''
+#for tag in soup.find_all(True):
+#    print(tag.name)
+
+'''传方法
+如果没有合适过滤器,那么还可以定义一个方法,方法只接受一个元素参数 [4] ,如果这个方法返回 True 表示当前元素匹配并
+且被找到,如果不是则反回 False
+下面方法校验了当前元素,如果包含 class 属性却不包含 id 属性,那么将返回 True:'''
+#def has_class_but_no_id(tag):
+#    return tag.has_attr('class') and not tag.has_attr('id')
+#soup.find_all(has_class_but_no_id())
+
+'''keyword 参数
+注意：如果一个指定名字的参数不是搜索内置的参数名,搜索时会把该参数当作指定名字tag的属性来搜索,
+如果包含一个名字为 id 的参数,Beautiful Soup会搜索每个tag的”id”属性'''
+import re
+soup.find_all(id='link2')
+print soup.find_all(href=re.compile('elsie'))
+
+
