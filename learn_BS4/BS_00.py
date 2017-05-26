@@ -162,7 +162,14 @@ True 可以匹配任何值,下面代码查找到所有的tag,但是不会返回�
 注意：如果一个指定名字的参数不是搜索内置的参数名,搜索时会把该参数当作指定名字tag的属性来搜索,
 如果包含一个名字为 id 的参数,Beautiful Soup会搜索每个tag的”id”属性'''
 import re
-soup.find_all(id='link2')
-print soup.find_all(href=re.compile('elsie'))
+#soup.find_all(id='link2')
+#print soup.find_all(href=re.compile('elsie'))
+#如果传入 href 参数,Beautiful Soup会搜索每个tag的”href”属性
+#print soup.find_all(href=re.compile("elsie"))
+#使用多个指定名字的参数可以同时过滤tag的多个属性
+#print soup.find_all(href=re.compile("elsie"),id='link1')
+#在这里我们想用 class 过滤，不过 class 是 python 的关键词，这怎么办？加个下划线就可以
+#print soup.find_all("a",class_="sister")
+
 
 
