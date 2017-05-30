@@ -170,6 +170,9 @@ import re
 #print soup.find_all(href=re.compile("elsie"),id='link1')
 #在这里我们想用 class 过滤，不过 class 是 python 的关键词，这怎么办？加个下划线就可以
 #print soup.find_all("a",class_="sister")
+#通过 find_all() 方法的 attrs 参数定义一个字典参数来搜索包含特殊属性的tag
+#data_soup = BeautifulSoup('<div data-foo="value">foo!</div>','lxml')
+#print data_soup.find_all(attrs={"data-foo": "value"})
 
 
 
